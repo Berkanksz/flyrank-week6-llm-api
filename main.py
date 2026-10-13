@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException, status
 from dotenv import load_dotenv
 
 from src.llm.schema import TriageInput, TriageOutput, TriageCategory, TriageUrgency
-from src.llm.service import triage_with_repair
+from src.llm.production import triage_production
 
 load_dotenv()
 
@@ -32,7 +32,12 @@ def triage_message(payload: TriageInput):
         )
 
     try:
-        return triage_with_repair(payload.text)
+        return triage_production(payload.text)
+    except TimeoutError as te:
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail={"error": "LLM call timed out", "details": str(te)}
+        )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
