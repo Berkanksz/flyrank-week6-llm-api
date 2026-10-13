@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "input": "Where can I download my VAT invoice for last month?",
+    "expected_category": "billing"
+  },
+  {
+    "id": 2,
+    "input": "The page crashes with a white screen whenever I click save.",
+    "expected_category": "bug"
+  },
+  {
+    "id": 3,
+    "input": "It would be great to have a dark mode toggle in settings.",
+    "expected_category": "feature"
+  },
+  {
+    "id": 4,
+    "input": "Can I cancel my annual subscription and get a refund?",
+    "expected_category": "billing"
+  },
+  {
+    "id": 5,
+    "input": "Exporting to CSV produces garbled characters for UTF-8 names.",
+    "expected_category": "bug"
+  },
+  {
+    "id": 6,
+    "input": "Do you support webhook notifications for Slack?",
+    "expected_category": "feature"
+  },
+  {
+    "id": 7,
+    "input": "Thank you so much for the quick help earlier, have a great day!",
+    "expected_category": "other"
+  },
+  {
+    "id": 8,
+    "input": "What is the capital city of France?",
+    "expected_category": "other"
+  }
+]
