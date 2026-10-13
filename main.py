@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException, status
 from dotenv import load_dotenv
 
 from src.llm.schema import TriageInput, TriageOutput, TriageCategory, TriageUrgency
+from src.llm.service import triage_with_repair
 
 load_dotenv()
 
@@ -21,7 +22,7 @@ def read_root():
 @app.post("/triage", response_model=TriageOutput, status_code=status.HTTP_200_OK)
 def triage_message(payload: TriageInput):
     """Classify incoming support messages into structured team actions."""
-    # Stage 1: Stub mode check
+    # Stub mode check
     if os.environ.get("LLM_STUB", "0") == "1":
         return TriageOutput(
             category=TriageCategory.bug,
@@ -30,10 +31,10 @@ def triage_message(payload: TriageInput):
             reason="Hardcoded stub response for Stage 1 validation."
         )
 
-    # Placeholder for Stage 2 real model call
-    return TriageOutput(
-        category=TriageCategory.other,
-        urgency=TriageUrgency.low,
-        confidence=0.5,
-        reason="Default response pending model wiring."
-    )
+    try:
+        return triage_with_repair(payload.text)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={"error": "LLM output failed validation after repair", "details": str(e)}
+        )
